@@ -7,10 +7,10 @@ router.post('/', async (req, res) => {
     try {
         const { description } = req.body;
         const newTodo = await pool.query(
-            "INSERT INTO todo (description) VALUES($1) RETURNING *",
-            [description]
-        );
-        res.json(newTodo.rows[0]);
+            "INSERT INTO todo (description) VALUES($1) RETURNING *",[description]);
+        res.status(201).json(newTodo.rows[0]);
+        // console.log(description);
+        
     } catch (err) {
         console.error(err.message);
         res.status(500).send("Server Error");
@@ -33,9 +33,7 @@ router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const todo = await pool.query(
-            "SELECT * FROM todo WHERE todo_id = $1",
-            [id]
-        );
+            "SELECT * FROM todo WHERE todo_id = $1",[id]);
         res.json(todo.rows[0]);
     } catch (err) {
         console.error(err.message);
